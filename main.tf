@@ -116,7 +116,7 @@ resource "azurerm_windows_virtual_machine" "main" {
 
 #Install IIS web server to VM
 resource "azurerm_virtual_machine_extension" "web_server_install"{
-    name = "${random_prefix.pet.id}-wsi"
+    name = "${random_pet.prefix.id}-wsi"
     virtual_machine_id = azurerm_windows_virtual_machine.main.id
     publisher ="Microsoft.compute"
     type = "customScriptExtension"
@@ -125,7 +125,7 @@ resource "azurerm_virtual_machine_extension" "web_server_install"{
 
     settings = <<SETTINGS
     {
-    "commandToExecute":powershell -executionpolicy unrestricted Install-WindowsFeature -Name web-server -IncludeAllSubFeature -IncludeManagementTools"
+    "commandToExecute":"powershell -executionpolicy unrestricted Install-WindowsFeature -Name web-server -IncludeAllSubFeature -IncludeManagementTools"
     }
     SETTINGS
 }
@@ -151,4 +151,5 @@ resource "random_password" "password"{
 resource "random_pet" "prefix"{
     prefix = var.prefix
     length = 1
+
 }
